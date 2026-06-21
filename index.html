@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>UPESG INBOX</title>
+
+<style>
+
+body{
+  margin:0;
+  padding:20px;
+  background:#1f3c88;
+  font-family:Arial,sans-serif;
+}
+
+
+h1{
+  text-align:center;
+  color:#ffd700;
+  text-shadow:2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.subtitle{
+  text-align:center;
+  color:#444;
+  margin-bottom:20px;
+}
+
+.search{
+  display:flex;
+  gap:10px;
+}
+
+input{
+  flex:1;
+  padding:12px;
+  border:1px solid #ccc;
+  border-radius:10px;
+}
+
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  background:#1f3c88;
+  color:white;
+}
+
+.card{
+  margin-top:15px;
+  padding:15px;
+  border-radius:12px;
+}
+
+.manifs{
+  background:#dceeff;
+}
+
+.rants{
+  background:#ffd9eb;
+}
+
+.safe{
+  background:#fff6b3;
+}
+
+.type{
+  font-weight:bold;
+  font-size:18px;
+}
+
+.meta{
+  color:#555;
+  font-size:13px;
+  margin-top:5px;
+  margin-bottom:10px;
+}
+
+.counter{
+  margin-top:20px;
+  font-weight:bold;
+}
+
+.empty{
+  text-align:center;
+  margin-top:40px;
+  font-size:20px;
+}
+
+.loading{
+  text-align:center;
+  margin-top:20px;
+  display:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1> UPESG INBOX</h1>
+
+<div class="subtitle">
+MESSAGES UPDATE AUTOMATICALLY
+</div>
+
+<div class="search">
+
+<input
+id="code"
+placeholder="Enter your code">
+
+<button
+id="searchBtn"
+onclick="search()">
+SEARCH
+</button>
+
+</div>
+
+<div
+id="loading"
+class="loading">
+Loading...
+</div>
+
+<div id="results"></div>
+
+</div>
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbxvFlKFHBR7mrezzRwq3o7_joFc5tkdpQHynnfp_sB2u1pEb-2QQy6omNOQyDPS9Ffq/exec";
+
+let currentCode = "";
+
+async function search() {
+
+  currentCode =
+    document.getElementById("code")
+    .value
+    .trim();
+
+  if(!currentCode) return;
+
+  const loading =
+    document.getElementById("loading");
+
+  const btn =
+    document.getElementById("searchBtn");
+
+  const results =
+    document.getElementById("results");
+
+  loading.style.display = "block";
+  btn.disabled = true;
+
+  try {
+
+    const res = await fetch(
+      API_URL +
+      "?code=" +
+      encodeURIComponent(currentCode)
+    );
+
+    const data = await res.json();
+
+    loading.style.display = "none";
+    btn.disabled = false;
+
+    if(!data.success){
+
+      results.innerHTML =
+      "<div class='empty'>❌ Invalid code</div>";
+
+      return;
+    }
+
+    let html = `
+      <h2>${data.to}</h2>
+      <div class="counter">
+      ${data.count} message(s) found
+      </div>
+    `;
+
+    if(data.count === 0){
+
+      html += `
+      <div class="empty">
+      hehe no messages yet 🥹
+      </div>
+      `;
+
+      results.innerHTML = html;
+      return;
+    }
+
+    data.messages.forEach(msg => {
+
+      let cls = "";
+
+      if(msg.type === "MANIFS")
+        cls = "manifs";
+
+      if(msg.type === "RANTS")
+        cls = "rants";
+
+      if(msg.type === "SAFE")
+        cls = "safe";
+
+      html += `
+      <div class="card ${cls}">
+
+      <div class="type">
+      ${msg.type}
+      </div>
+
+      <div class="meta">
+      ${msg.timestamp}<br>
+      From: ${msg.from}
+      </div>
+
+      <div>
+      ${msg.message}
+      </div>
+
+      </div>
+      `;
+    });
+
+    results.innerHTML = html;
+
+  } catch(err){
+
+    loading.style.display = "none";
+    btn.disabled = false;
+
+    results.innerHTML =
+    "<div class='empty'>⚠️ Error loading messages</div>";
+
+    console.error(err);
+  }
+}
+
+setInterval(() => {
+
+  if(currentCode){
+    search();
+  }
+
+}, 30000);
+
+</script>
+
+</body>
+</html>
