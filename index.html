@@ -187,7 +187,7 @@ async function search() {
     if(!data.success){
 
       results.innerHTML =
-      "<div class='empty'>❌ Invalid code ❌</div>";
+      "<div class='empty' style="color:white">❌ INVALID CODE ❌</div>";
 
       return;
     }
@@ -203,7 +203,7 @@ ${data.count} message(s) found
     if(data.count === 0){
 
       html += `
-      <div class="empty">
+      <div class="empty" style="color:white">
       hehe no messages yet 🥹
       </div>
       `;
@@ -253,7 +253,7 @@ ${data.count} message(s) found
     btn.disabled = false;
 
     results.innerHTML =
-    "<div class='empty'>⚠️ Error loading messages</div>";
+    "<div class='empty'style="color:white">⚠️ Error loading messages</div>";
 
     console.error(err);
   }
