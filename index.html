@@ -25,7 +25,6 @@ h1{
   text-align:center;
   color:#ffd700;
   text-shadow:2px 2px 4px rgba(0,0,0,0.3);
-  font-family:'Jersey 25', sans-serif;
 }
   
 h2{
@@ -36,13 +35,11 @@ h2{
   text-align:center;
   color:#FFFFFF;
   margin-bottom:20px;
-  font-family:'Indie Flower',sans-serif;
-  font-size:18px;
 }
 
 .search{
   display:flex;
-  gap:10px;
+  gap:12px;
 }
 
 input{
@@ -50,11 +47,10 @@ input{
   padding:12px;
   border:1px solid #ccc;
   border-radius:10px;
-  font-size:15px;
 }
 
 button{
-  padding:12px;
+  padding:12px 20px;
   border:none;
   border-radius:10px;
   cursor:pointer;
@@ -127,7 +123,7 @@ MESSAGES UPDATE AUTOMATICALLY
 
 <input
 id="code"
-placeholder="ENTER YOUR CODE">
+placeholder="Enter your code">
 
 <button
 id="searchBtn"
@@ -191,7 +187,7 @@ async function search() {
     if(!data.success){
 
       results.innerHTML =
-      "<div class='empty'>❌ INVALID CODE ❌</div>" style="color:white">;
+      "<div class='empty'>❌ Invalid code ❌</div>";
 
       return;
     }
@@ -208,7 +204,7 @@ ${data.count} message(s) found
 
       html += `
       <div class="empty">
-      hehe no messages yet 🥹 style="color:white">
+      hehe no messages yet 🥹
       </div>
       `;
 
