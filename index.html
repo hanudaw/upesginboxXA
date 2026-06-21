@@ -26,10 +26,6 @@ h1{
   color:#ffd700;
   text-shadow:2px 2px 4px rgba(0,0,0,0.3);
 }
-  
-h2{
-  color:white;
-}
 
 .subtitle{
   text-align:center;
@@ -39,7 +35,7 @@ h2{
 
 .search{
   display:flex;
-  gap:12px;
+  gap:10px;
 }
 
 input{
@@ -54,7 +50,7 @@ button{
   border:none;
   border-radius:10px;
   cursor:pointer;
-  background:#102047;
+  background:#1f3c88;
   color:white;
 }
 
@@ -135,7 +131,7 @@ onclick="search()">
 
 <div
 id="loading"
-class="loading" style="color:white">
+class="loading">
 Loading...
 </div>
 
@@ -187,17 +183,16 @@ async function search() {
     if(!data.success){
 
       results.innerHTML =
-      "<div class='empty'>❌ Invalid code ❌</div>";
+      "<div class='empty'>❌ Invalid code</div>";
 
       return;
     }
 
     let html = `
-<h2 style="color:white">${data.to}</h2>
-
-<div class="counter" style="color:white">
-${data.count} message(s) found
-</div>
+      <h2>${data.to}</h2>
+      <div class="counter">
+      ${data.count} message(s) found
+      </div>
     `;
 
     if(data.count === 0){
